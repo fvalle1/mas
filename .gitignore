@@ -25,3 +25,12 @@ hs_err_pid*
 jade/\.DS_Store
 
 jade/
+/target/
+
+MTPs-Pacman\.txt
+
+src/test/java/mas/MyAgent\.java
+
+src/test/java/mas/Prova\.java
+
+APDescription\.txt
