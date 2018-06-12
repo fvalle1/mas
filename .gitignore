@@ -34,3 +34,7 @@ src/test/java/mas/MyAgent\.java
 src/test/java/mas/Prova\.java
 
 APDescription\.txt
+
+\.settings/
+
+\.classpath
