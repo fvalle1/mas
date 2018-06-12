@@ -2,13 +2,11 @@ package it.unito.ph.mas;
 
 import java.util.Map;
 
-import jade.core.AgentContainer;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import jade.core.AgentContainer;
+import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
 public class modelManager {
@@ -22,7 +20,7 @@ public class modelManager {
 	public static void main(String[] args) {
 		System.out.println("Inizio modello :-)");
 	
-	Runtime runtime = runtime.instance();
+	Runtime runtime = Runtime.instance();
 	runtime.setCloseVM(true);
 	
 	Profile profile = new ProfileImpl(true);
@@ -31,10 +29,10 @@ public class modelManager {
 	profile.setParameter(Profile.GUI, "true");
 	
 	
-	AgentContainer mainContainer = (AgentContainer) runtime.createMainContainer(profile);
+	AgentContainer mainContainer = runtime.createMainContainer(profile);
 	
 	try {
-		AgentController persona = ((ContainerController) mainContainer).createNewAgent("persona","it.unito.ph.mas.Persona", new Object[0]);
+		AgentController persona = mainContainer.createNewAgent("persona","it.unito.ph.mas.Persona", new Object[0]);
 		persona.start();
 	} catch (StaleProxyException e) {
 		e.printStackTrace();
