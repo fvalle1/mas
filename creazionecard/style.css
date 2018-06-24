@@ -1,3 +1,7 @@
+div.tab{
+	padding-left:2em;
+}
+
 .myrow {
 	background-color: #4153ad;
 	color: #fcfcfc
@@ -6,30 +10,4 @@
 :hover.myrow{
 	background-color: #3e58d8;
 	color: #FFF;
-}
-
-div.ref {
-	width:50%;
-	margin:auto;
-	font-size:30px;
-	font-color: blue;
-}
-
-div.tab {
-	width:90%;
-	margin:auto;
-	padding-top: 2em;
-}
-
-@media screen and (max-width: 600px){
-	body{
-	width:100%;
-	margin:auto;
-	}
-	
-	div.tab {
-	width:100%;
-	margin:0;
-	padding-top: 2em;
-}
 }

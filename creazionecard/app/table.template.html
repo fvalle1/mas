@@ -1,17 +1,15 @@
 <div class="tab">
-<div class="table-responsive">
-<table class="table-bordered table-hover table-striped">
+<table class="table">
 
-<thead> //table header td=fai una cella di una riga
+<thead class="thead"> <!--  table header td=fai una cella di una riga-->
 <tr class="row">
-<th data-ng-repeat="type in types"  class="col-md-2">{{type}}</th>
+<th class="col-md-2">orario</th><th data-ng-repeat="type in types"  class="col-md-2">{{type}}</th>
 </tr>
 </thead>
 <tbody>
 <tr class="row" data-ng-repeat="hour in hours">
-<td class="col-md-2">{{hour}}</td><td data-ng-repeat="type in types" class="col-md-2 myrow"><mycell my-cell-content="behaviour"></mycell></td>
+<td class="col-md-2">{{hour}}</td><td data-ng-repeat="type in types" class="col-md-2"><mycell my-cell-hour="hour" my-cell-card="type" my-cell-content="behaviour"></mycell></td>
 </tr>
 </tbody>
 </table>
-</div>
 </div>

@@ -6,6 +6,8 @@ angular.module("cell")
 	},
 	bindings: {
 		myCellContent: '<',
+		myCellCard: '<',
+		myCellHour: '<'
 	}
 }
 );

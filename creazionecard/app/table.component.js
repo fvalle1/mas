@@ -3,11 +3,10 @@ angular.module("table")
 	templateUrl:"app/table.template.html",
 	controller : function tableController($scope){
 		$scope.types= [
-			"",
 			"card1", 
 			"card2", 
 			"card3",
-			//"card4",
+			"card4",
 			//"card5",
 			//"card6",
 			//"card7",
