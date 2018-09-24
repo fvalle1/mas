@@ -1,6 +1,15 @@
 package it.unito.ph.mas;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Map;
+
+import javax.swing.SingleSelectionModel;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -23,6 +32,8 @@ public class modelManager {
 
 	public static Map<String,Linea> mappa;
 	public Percorso GoogleMaps(Double[] whereAmI, Double[] destinazione) {
+		
+		
 		return null;
 	}
 
@@ -34,10 +45,18 @@ public class modelManager {
 	private static Runtime runtime;
 	private static AgentContainer mainContainer;
 
-	private static void setup() {
+	
+	private static Reader SCHEDULE_READER;
+	
+	private static void setup() throws FileNotFoundException {
+		jadeSetup();
+		fileSetup();
+	}
 
-		System.out.println("Inizio modello :-)");
-
+	/**
+	 * initialize jade
+	 */
+	private static void jadeSetup() {
 		runtime = Runtime.instance();
 		runtime.setCloseVM(true);
 
@@ -55,23 +74,38 @@ public class modelManager {
 		} catch (StaleProxyException e) {
 			e.printStackTrace();
 		}
-
-
+	}
+	
+	private static void fileSetup() throws FileNotFoundException {
+		SCHEDULE_READER = new FileReader("schedule.csv");
 	}
 
-	private static void Daicard(int day) {
+	private static void Daicard(int day) throws IOException {
+		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(SCHEDULE_READER);
 
-		//..
-
+		for (CSVRecord agentSchedule : records) {
+			System.out.println(agentSchedule.get(day));
+		}
+	
 	}
 
 	public static void main(String[] args) {
+		System.out.println("Inizio modello :-)");
 
-		setup();
+		
+		try {
+			setup();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
 
 		for(int day=0;day<365;day ++) {
 
-			Daicard(day);
+			try {
+				Daicard(day);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
 			int numerorun = 24 * 60 / parameters.duratarun / parameters.numerofasciaoraria;
 
