@@ -40,3 +40,5 @@ APDescription\.txt
 \.classpath
 
 MTPs-Città\.txt
+.csv
+.ipynb_checkpoints/
