@@ -14,6 +14,7 @@ doCards=function(){
 
 	for (var i = 1; i <= ncards; i++) {
 		let row = [];
+		let card = [];
 		for ( let hour of hours) {
 			val = $("#"+hour+"card"+i).val().toString();
 			if(val.localeCompare("gohome")==0) row.push(0);
@@ -25,13 +26,15 @@ doCards=function(){
 			if(val.localeCompare("stay")==0) row.push(6);
 		}
 		output.push(row);
+		card.push(row);
+		exportToCsv("card"+i+".card", card);
 	}
 	exportToCsv("cards.csv", output);
 }
 
 
 function exportToCsv(filename, rows) {
-	console.debug(rows);
+	console.info(rows);
 	var processRow = function (row) {
 		var finalVal = '';
 		for (var j = 0; j < row.length; j++) {

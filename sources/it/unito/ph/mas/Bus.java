@@ -2,7 +2,7 @@ package it.unito.ph.mas;
 
 import jade.core.Agent;
 
-public class Pullman extends Agent {
+public class Bus extends Agent {
 
 	int counter;
 	Linea myLinea;

@@ -6,112 +6,134 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Map;
 
-import javax.swing.SingleSelectionModel;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
+import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 
-enum fasciaoraria{
-	kmattino,
-	ktardamattinata,
-	kpranzo,
-	kprimopomeriggio,
-	kpomeriggio,
-	ksera,
-	knotte
+enum daytime{
+	kmorning,
+	klatemorning,
+	klunch,
+	knoon,
+	kafternoon,
+	kevening,
+	knight
 }
 
 public class modelManager {
 
 	public static Map<String,Linea> mappa;
 	public Percorso GoogleMaps(Double[] whereAmI, Double[] destinazione) {
-		
-		
+
+
 		return null;
 	}
 
 	public static int today;
-	public static fasciaoraria fasciaoraria;
+	public static daytime fasciaoraria;
 
 
 	private static Profile profile;
 	private static Runtime runtime;
 	private static AgentContainer mainContainer;
-
+	private static AgentContainer popContainer;
+	private static AgentContainer busContainer;
+	private static AgentController supervisor;
 	
-	private static Reader SCHEDULE_READER;
-	
-	private static void setup() throws FileNotFoundException {
+	private static void setup() throws StaleProxyException, IOException {
 		jadeSetup();
-		fileSetup();
 	}
 
 	/**
 	 * initialize jade
+	 * @throws StaleProxyException 
+	 * @throws IOException 
 	 */
-	private static void jadeSetup() {
+	private static void jadeSetup() throws StaleProxyException, IOException {
 		runtime = Runtime.instance();
 		runtime.setCloseVM(true);
 
 		profile = new ProfileImpl(true);
-		profile.setParameter(Profile.CONTAINER_NAME, "Città");
+		profile.setParameter(Profile.CONTAINER_NAME, "Main-container");
 		profile.setParameter(Profile.MAIN_HOST, "localhost");
 		profile.setParameter(Profile.GUI, "true");
 
-
 		mainContainer = runtime.createMainContainer(profile);
+		popContainer = createAgentContainer("People", "localhost");
+		busContainer = createAgentContainer("Buses", "localhost");
 
-		try {
-			AgentController persona = mainContainer.createNewAgent("persona","it.unito.ph.mas.Persona", new Object[0]);
-			persona.start();
-		} catch (StaleProxyException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static void fileSetup() throws FileNotFoundException {
-		SCHEDULE_READER = new FileReader("schedule.csv");
-	}
+		supervisor = mainContainer.createNewAgent("supervisor", "it.unito.ph.mas.Supervisor", new Object[0]);
+		supervisor.start();
 
-	private static void Daicard(int day) throws IOException {
-		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(SCHEDULE_READER);
-
+		Reader reader = new FileReader("schedule.csv");
+		Iterable<CSVRecord> records = CSVFormat.RFC4180.parse(reader);
+		int iAgent = 0;
 		for (CSVRecord agentSchedule : records) {
-			System.out.println(agentSchedule.get(day));
+
+			if( iAgent < parameters.populationSize) {
+				Card card = new Card(agentSchedule);
+				AgentController ag = popContainer.createNewAgent("buddy"+iAgent,"it.unito.ph.mas.Buddy", card.getProperties());
+				ag.start();
+			}
+			iAgent++;
 		}
-	
+
+		reader.close();
+
+		for (int iBus = 0; iBus < parameters.fleetSize; iBus++) {
+			AgentController ag = busContainer.createNewAgent("bus"+iBus,"it.unito.ph.mas.Bus", new Object[0]);
+			ag.start();
+		}
+
+
 	}
+
+	/**
+	 * append container to runtime
+	 * @return Agent container
+	 * @param name name container
+	 * @param host Profile.MAIN_HOST
+	 */
+	private static AgentContainer createAgentContainer(String name, String host) {
+		profile = new ProfileImpl(true);
+		profile.setParameter(Profile.CONTAINER_NAME, name);
+		profile.setParameter(Profile.MAIN_HOST, host);
+		profile.setParameter(Profile.GUI, "true");
+
+
+		return runtime.createAgentContainer(profile);
+	}
+
 
 	public static void main(String[] args) {
 		System.out.println("Inizio modello :-)");
 
-		
+
 		try {
 			setup();
-		} catch (FileNotFoundException e1) {
+		} catch (IOException | StaleProxyException e1) {
 			e1.printStackTrace();
 		}
 
 		for(int day=0;day<365;day ++) {
+			
+			UniversalCentralTime.day = day;
 
-			try {
-				Daicard(day);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			int runnumber = 24 * 60 / parameters.minutesInRun / parameters.numOfDaytime;
 
-			int numerorun = 24 * 60 / parameters.duratarun / parameters.numerofasciaoraria;
+			for (int daytime = 0; daytime < parameters.numOfDaytime; daytime++) {
+				
+				UniversalCentralTime.time = daytime;
 
-			for (int fascia = 0; fascia < parameters.numerofasciaoraria; fascia++) {
-
-				for(int run = 0; run<numerorun; run++) {
+				for(int run = 0; run<runnumber; run++) {
 
 					//chiama runagent;
 
