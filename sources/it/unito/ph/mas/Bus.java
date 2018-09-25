@@ -4,18 +4,23 @@ import jade.core.Agent;
 
 public class Bus extends Agent {
 
-	int counter;
+	int peopleOn;
 	Linea myLinea;
 
 	private int capacita;
 
 	protected void setup() {
+		peopleOn = 0;
 
 	}
 
 	@Override
 	protected void takeDown() {
 
+	}
+	
+	public void peopleOn() {
+		peopleOn++;
 	}
 
 	void rispondiPersona() {

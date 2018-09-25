@@ -21,6 +21,15 @@ public class Buddy extends Agent {
 	private static int[] YEARLYAGENDA; 
 
 	protected void setup() {
+		setupArgs();
+
+		addBehaviour(new BuddyListener());
+	}
+
+	/**
+	 * 
+	 */
+	private void setupArgs() {
 		Object[] arg = getArguments();
 		YEARLYAGENDA = new int[arg.length];
 		for (int i =0; i < arg.length; i++) {
@@ -33,12 +42,10 @@ public class Buddy extends Agent {
 
 	}
 
-	public void RunAgent() {
-		try {
-			LeggiCarta();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void RunAgent() throws IOException {
+
+		addBehaviour(readCard());
+
 		cercaLinea();
 		miMuovo();
 		salgo();
@@ -46,7 +53,7 @@ public class Buddy extends Agent {
 		miMuovo();
 	}
 
-	Behaviour LeggiCarta() throws IOException {
+	Behaviour readCard() throws IOException {
 		int currentCard = YEARLYAGENDA[UniversalCentralTime.day];
 
 		Reader reader = new FileReader("card"+currentCard+".card");
