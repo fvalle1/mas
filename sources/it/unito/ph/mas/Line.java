@@ -3,9 +3,11 @@ package it.unito.ph.mas;
 import java.util.ArrayList;
 
 public class Line {
-	ArrayList<BusStop> route;
-	
+	private ArrayList<BusStop> route;
+
 	Line(Coordinates... stops){
+		route = new ArrayList<BusStop>();
+		
 		for(Coordinates stop : stops) {
 			route.add(new BusStop(stop));
 		}

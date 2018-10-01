@@ -7,7 +7,7 @@ import jade.core.Agent;
 
 public class Supervisor extends Agent {
 
-	public static Map<String,Line> map;
+	public static  Map<String,Line> map;
 	public Route GoogleMaps(Double[] whereAmI, Double[] destinazione) {
 
 
