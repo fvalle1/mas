@@ -5,7 +5,7 @@ import jade.core.Agent;
 public class Bus extends Agent {
 
 	int peopleOn;
-	Linea myLinea;
+	Line myLinea;
 
 	private int capacita;
 

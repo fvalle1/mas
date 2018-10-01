@@ -16,7 +16,7 @@ public class Buddy extends Agent {
 
 	Double[] whereAmI;
 	Behaviour whatIAmDoing;
-	Percorso percorso;
+	Route percorso;
 
 	private static int[] YEARLYAGENDA; 
 

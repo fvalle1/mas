@@ -29,14 +29,6 @@ enum daytime{
 }
 
 public class modelManager {
-
-	public static Map<String,Linea> mappa;
-	public Percorso GoogleMaps(Double[] whereAmI, Double[] destinazione) {
-
-
-		return null;
-	}
-
 	public static int today;
 	public static daytime fasciaoraria;
 
