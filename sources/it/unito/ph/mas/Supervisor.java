@@ -31,6 +31,16 @@ public class Supervisor extends Agent {
 				new Coordinates(1, 1)
 				)
 				);
+		
+		map.put("16", new Line(
+				new Coordinates(0, 0),
+				new Coordinates(1, 1),
+				new Coordinates(1, 2),
+				new Coordinates(1, 3),
+				new Coordinates(3, 0)
+
+				)
+				);
 	}
 
 	@Override
